@@ -1,5 +1,5 @@
 # Job Tracker
-
+ 
 A clean, modern daily job application tracker designed to help you hit your daily application targets and track your job search progress.
 
 ## ✨ Features

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job Tracker · Daily Applications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-main">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Job Tracker</h1>
+            <span class="date-badge" id="today-label"></span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle dark/light mode">
+            <svg id="theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg id="theme-icon-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon target-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value"><span id="count">0</span><span class="stat-target"> / 10</span></div>
+            <div class="stat-label">Today's Target</div>
+          </div>
+          <div class="stat-badge" id="target-badge">0%</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon streak-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value"><span id="streak">0</span> <span class="stat-unit">days</span></div>
+            <div class="stat-label">Active Streak</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon total-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value"><span id="total">0</span></div>
+            <div class="stat-label">Total Applied</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-wrap">
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="bar">
+          <div class="progress-fill" id="bar-fill"></div>
+        </div>
+        <div class="progress-text" id="log-hint">10 more applications to reach today's goal</div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="shortlist" role="tab" aria-selected="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Shortlist
+        <span class="tab-badge" id="badge-shortlist">0</span>
+      </button>
+
+      <button class="tab-btn" data-tab="log" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Daily Log
+        <span class="tab-badge" id="badge-log">0</span>
+      </button>
+
+      <button class="tab-btn" data-tab="history" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </button>
+
+      <button class="tab-btn" data-tab="boards" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Job Boards
+      </button>
+
+      <button class="tab-btn" data-tab="settings" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Data & Backup
+      </button>
+    </nav>
+
+    <!-- Main Content Panels -->
+    <main>
+      <!-- Panel 1: Shortlist -->
+      <section class="tab-panel active" id="panel-shortlist">
+        <div class="filters-bar">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="q" type="search" placeholder="Search role, company, skills..." aria-label="Search jobs">
+          </div>
+          <div class="filter-group">
+            <div class="segmented-control" id="mode-pills">
+              <button class="pill-btn active" data-mode="">All</button>
+              <button class="pill-btn" data-mode="Remote">Remote</button>
+              <button class="pill-btn" data-mode="Bengaluru">Bengaluru</button>
+              <button class="pill-btn" data-mode="Other">Other</button>
+            </div>
+            <label class="toggle-pill">
+              <input id="disclosed" type="checkbox">
+              <span>Salary Disclosed</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="jobs" class="jobs-grid"></div>
+      </section>
+
+      <!-- Panel 2: Today's Log -->
+      <section class="tab-panel" id="panel-log">
+        <div class="card add-card">
+          <div class="card-header">
+            <h3>Quick Add Application</h3>
+          </div>
+          <form id="add" class="add-form" autocomplete="off">
+            <div class="form-row-main">
+              <div class="input-wrap">
+                <label>Company *</label>
+                <input name="company" placeholder="e.g. Google, Zerodha" required maxlength="80">
+              </div>
+              <div class="input-wrap">
+                <label>Role *</label>
+                <input name="role" placeholder="e.g. Frontend Engineer" required maxlength="100">
+              </div>
+              <div class="input-wrap">
+                <label>Salary</label>
+                <input name="salary" placeholder="e.g. ₹10–14 LPA" maxlength="40">
+              </div>
+              <div class="input-wrap">
+                <label>Status</label>
+                <select name="status" aria-label="Status"></select>
+              </div>
+            </div>
+            <div class="form-row-sub">
+              <div class="input-wrap flex-2">
+                <label>Job Link</label>
+                <input name="link" type="url" placeholder="https://..." maxlength="500">
+              </div>
+              <div class="input-wrap flex-3">
+                <label>Notes</label>
+                <input name="notes" placeholder="e.g. Applied via referral, follow up next Tuesday" maxlength="200">
+              </div>
+              <button class="btn btn-primary submit-btn" type="submit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Log Job
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-card">
+          <div class="table-card-head">
+            <h3>Today's Applications</h3>
+            <span class="count-pill" id="log-count-pill">0 logged</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Role</th>
+                  <th>Salary</th>
+                  <th>Status</th>
+                  <th>Notes</th>
+                  <th class="text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="log-body"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="log-empty">
+            <div class="empty-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <h4>No applications logged today</h4>
+            <p>Pick a role from Shortlist or add one above to build your streak.</p>
+            <button class="btn btn-outline" id="switch-to-shortlist">Browse Shortlist</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 3: History -->
+      <section class="tab-panel" id="panel-history">
+        <div class="table-card">
+          <div class="table-card-head">
+            <h3>Application History</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Applied</th>
+                  <th>Target Status</th>
+                  <th>Companies</th>
+                </tr>
+              </thead>
+              <tbody id="hist-body"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="hist-empty">
+            <div class="empty-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h4>No past history yet</h4>
+            <p>Applications logged across days will show up here automatically.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 4: Job Boards -->
+      <section class="tab-panel" id="panel-boards">
+        <div class="boards-header">
+          <h3>Curated Portals</h3>
+          <p class="section-desc">Direct links to top fresher & entry-level job feeds.</p>
+        </div>
+        <div id="boards" class="boards-grid"></div>
+      </section>
+
+      <!-- Panel 5: Settings & Backup -->
+      <section class="tab-panel" id="panel-settings">
+        <div class="settings-grid">
+          <div class="card setting-card">
+            <div class="setting-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div>
+              <h4>Export CSV</h4>
+              <p>Download spreadsheet of all your logged applications.</p>
+              <button class="btn btn-outline" id="export-csv">Download CSV</button>
+            </div>
+          </div>
+
+          <div class="card setting-card">
+            <div class="setting-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            </div>
+            <div>
+              <h4>Backup JSON</h4>
+              <p>Save complete database backup file.</p>
+              <button class="btn btn-outline" id="export-json">Save Backup</button>
+            </div>
+          </div>
+
+          <div class="card setting-card">
+            <div class="setting-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div>
+              <h4>Restore Backup</h4>
+              <p>Import and merge applications from a JSON backup.</p>
+              <label class="btn btn-outline file-btn">
+                Select File
+                <input id="import" type="file" accept="application/json" hidden>
+              </label>
+            </div>
+          </div>
+
+          <div class="card setting-card danger-card">
+            <div class="setting-icon danger-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </div>
+            <div>
+              <h4>Reset Data</h4>
+              <p>Permanently remove all logged applications from this browser.</p>
+              <button class="btn btn-danger" id="reset">Clear Everything</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
